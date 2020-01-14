@@ -1,26 +1,28 @@
 import {
-  Component, OnInit, Input, EventEmitter, Output
+  Component, Input, EventEmitter, Output
 } from '@angular/core';
 import { NewsData } from '../news-data';
+import { NewsService } from '../news.service';
 
 @Component({
   selector: 'app-news-item',
   templateUrl: './news-item.component.html',
   styleUrls: ['./news-item.component.css']
 })
-export class NewsItemComponent implements OnInit {
+export class NewsItemComponent {
   @Input()
-  public title: string;
+  public news: NewsData;
 
-  @Output()
-  public onRemove = new EventEmitter();
+  @Input()
+  public index: number;
+
+  constructor(
+    private newsService: NewsService
+  ) { }
 
   imageUrl = 'https://d-pt.ppstatic.pl/k/r/1/76/c4/5d164a4f796d2_p.jpg?1574765877';
 
-  ngOnInit() {
-  }
-
   remove() {
-    this.onRemove.emit();
+    this.newsService.removeItem(this.index);
   }
 }

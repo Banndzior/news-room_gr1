@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NewsData } from '../news-data';
+import { NewsService } from '../news.service';
 
 @Component({
   selector: 'app-news-list',
@@ -6,21 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./news-list.component.css']
 })
 export class NewsListComponent implements OnInit {
-  news: string[];
+  news: NewsData[];
+
+  constructor(
+    private newsService: NewsService
+  ) { }
 
   ngOnInit() {
-    this.news = [
-      '123',
-      '345',
-      'sads'
-    ];
+    this.loadNews();
+
+    this.newsService.onChange.subscribe(() => this.loadNews());
   }
 
-  removeItem(i: number) {
-    this.news.splice(i, 1);
-  }
-
-  addItem(title: string) {
-    this.news.push(title);
+  loadNews() {
+    this.news = [];
+    setTimeout(() => {
+      this.news = this.newsService.getNewsList();
+    }, 1000);
   }
 }
